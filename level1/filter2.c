@@ -48,7 +48,7 @@ int main(int ac, char **av)
 	}
 	str[read_bytes] = '\0';
 	i = 0;
-	while(str)
+	while(str[i])
 	{
 		j = 0;
 		if(str[i + j] == av[1][j])
