@@ -108,7 +108,7 @@ char *get_next_line(int fd)
 		read_ret = read(fd, chunk, BUFFER_SIZE);
 		if (read_ret <= 0)
 		{
-			if(*ret || ret)
+			if(*ret && ret)
 			{
 				chunk[0] = '\0';
 				return ret;
