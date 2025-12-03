@@ -1,13 +1,14 @@
 #define _GNU_SOURCE
-#include <string.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 
 int main(int ac, char **av)
 {
 	char str[1000000];
-	int read_ret = 1;
 	size_t i = 0;
+	int read_ret = 1;
+
 	if(ac != 2 || av[1] == NULL)
 		return 1;
 	while(read_ret > 0)

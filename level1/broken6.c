@@ -13,7 +13,7 @@ char *ft_strchr(char *s, int c)
 
 void *ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	i = 0;
+	size_t i = 0;
 	while (i < n)
 	{
 		((char*)dest)[i] = ((char*)src)[i];
@@ -44,31 +44,45 @@ int str_append_mem(char **s1, char *s2, size_t size2)
 		return 0;
 	if(*s1)
 		ft_memcpy(tmp, *s1, size1);
-    ft_memcpy(tmp + size1, s2, size2);
-    tmp[size1 + size2] = 0;
-    free(*s1);
-    *s1 = tmp;
-    return 1;
+	ft_memcpy(tmp + size1, s2, size2);
+	tmp[size1 + size2] = 0;
+	free(*s1);
+	*s1 = tmp;
+	return 1;
 }
 
 int str_append_str(char **s1, char *s2)
 {
-    return str_append_mem(s1, s2, ft_strlen(s2));
+	return str_append_mem(s1, s2, ft_strlen(s2));
 }
 
 void *ft_memmove(void *dest, const void *src, size_t n)
 {
-    if (dest > src)
-        return ft_memcpy(dest, src, n);
-    else if (dest == src)
-        return dest;
-    size_t i = ft_strlen((char*)src) - 1;
-    while (i >= 0)
-    {
-        ((char*)dest)[i] = ((char*)src)[i];
-        i--;
-    }
-    return dest;
+	size_t i;
+	unsigned char *d = dest;
+	const unsigned char *s = src;
+
+	if(d == s)
+		return dest;
+	if(d < s)
+	{
+		i = 0;
+		while(i < n)
+		{
+			d[i] = s[i];
+			i++;
+		}
+	}
+	else
+	{
+		i = n;
+		while(i > 0)
+		{
+			d[i - 1] = s[i - 1];
+			i--;
+		}
+	}
+	return dest;
 }
 
 char *get_next_line(int fd)
@@ -83,7 +97,6 @@ char *get_next_line(int fd)
 		if(read_ret <= 0)
 			return NULL;
 		chunk[read_ret] = '\0';
-
 	}
 	char *tmp = ft_strchr(chunk, '\n');
 	while (!tmp)
@@ -99,10 +112,11 @@ char *get_next_line(int fd)
 				return ret;
 			}
 			free(ret);
+			chunk[0] = '\0';
 			return NULL;
 		}
-		tmp = ft_strchr(chunk, '\n');
 		chunk[read_ret] = '\0';
+		tmp = ft_strchr(chunk, '\n');
 	}
 	if (!str_append_mem(&ret, chunk, tmp - chunk + 1))
 	{
@@ -111,4 +125,17 @@ char *get_next_line(int fd)
 	}
 	ft_memmove(chunk, tmp + 1, ft_strlen(tmp + 1) + 1);
 	return ret;
+}
+
+int main(void)
+{
+	char *line;
+	int fd = open("get_next_line.h", O_RDONLY);
+	while((line = get_next_line(fd)))
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return 0;
 }
