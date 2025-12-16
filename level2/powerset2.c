@@ -2,30 +2,30 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void print_sets(int *set, int size)
+void	print_set(int *set, int size)
 {
 	int i = 0;
 	while(i < size)
 	{
 		printf("%d", set[i]);
-		if(i < size - 1)
+		if(i < size -1)
 			printf(" ");
 		i++;
 	}
 	printf("\n");
 }
 
-void find_set(int *nums, int size, int soma, int *set, int set_index, int index, int target)
+void find_set(int *nums, int *set, int size, int sum, int index, int set_index, int target)
 {
-	int next_soma = 0;
-	int	i = index;
+	int next_sum;
+	int i = index;
 	while(i < size)
 	{
-		next_soma = soma + nums[i];
+		next_sum = sum + nums[i];
 		set[set_index] = nums[i];
-		if(next_soma == target)
-			print_sets(set, set_index + 1);
-		find_set(nums, size, next_soma, set, set_index + 1, i + 1, target);
+		if(next_sum == target)
+			print_set(set, set_index + 1);
+		find_set(nums,set, size, next_sum, i + 1, set_index + 1, target);
 		i++;
 	}
 }
@@ -34,11 +34,10 @@ int main(int ac, char **av)
 {
 	if(ac < 3)
 		return 1;
-	int size = ac -2;
+	int size = ac - 2;
+	int i = 0;
 	int *nums = malloc(sizeof(int) * size);
 	int *set = malloc(sizeof(int) * size);
-	int soma = 0;
-	int i = 0;
 	int target = atoi(av[1]);
 	while(i < size)
 	{
@@ -47,8 +46,10 @@ int main(int ac, char **av)
 	}
 	if(target == 0)
 		printf("\n");
-	find_set(nums, size, soma, set, 0, 0, target);
-	free(set);
+	find_set(nums, set, size, 0, 0, 0, target);
 	free(nums);
-	return (0);
+	free(set);
+	return 0;
 }
+//cc -Wall -Wextra -Werror powerset5.c
+//./a.out 5 1 2 3 4 5

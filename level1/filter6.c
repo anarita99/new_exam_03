@@ -1,23 +1,23 @@
 #define _GNU_SOURCE
 #include <unistd.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 int main(int ac, char **av)
 {
-	char str[1000000];
-	size_t i = 0;
-	int read_ret = 1;
-
 	if(ac != 2 || av[1] == NULL)
 		return 1;
-	while(read_ret > 0)
+	char str[1000000];
+	size_t i = 0;
+	int read_res = 1;
+	while(read_res > 0)
 	{
-		read_ret = read(0, &str[i], 1);
-		if(read_ret == -1)
+		read_res = read(0, &str[i], 1);
+		if(read_res == - 1)
 		{
 			perror("Error: ");
-			return 1;
+			return 0;
 		}
 		i++;
 	}
@@ -40,3 +40,7 @@ int main(int ac, char **av)
 	printf("%s", str);
 	return 0;
 }
+
+
+//cc -Wall -Wextra -Werror filter6.c
+//echo 'abcdefgaaaabcdefabc' | ./a.out abc | cat -e

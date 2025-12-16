@@ -1,6 +1,7 @@
-#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
 void print_set(int *set, int size)
 {
@@ -17,7 +18,7 @@ void print_set(int *set, int size)
 
 void find_set(int *nums, int *set, int size, int soma, int index, int set_index, int target)
 {
-	int next_soma;
+	int next_soma = 0;
 	int i = index;
 	while(i < size)
 	{
@@ -44,9 +45,14 @@ int main(int ac, char **av)
 		nums[i] = atoi(av[i + 2]);
 		i++;
 	}
-	if(target == 0)
+	if (target == 0)
 		printf("\n");
 	find_set(nums, set, size, 0, 0, 0, target);
 	free(nums);
+	free(set);
 	return 0;
 }
+
+
+//cc -Wall -Wextra -Werror powerset5.c
+//./a.out 5 1 2 3 4 5

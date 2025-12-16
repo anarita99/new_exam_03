@@ -32,34 +32,41 @@ char *ft_strdup(char *s)
 	return(t);
 }
 
-int compare(char *s1, char *s2)
+int ft_strcmp(char *s1, char *s2)
 {
 	int i = 0;
 	if(!s1 || !s2)
 		return 0;
-	while(s1[i] && s2[i])
+	while(s1[i] && s2[i] && (s1[i] == s2[i]))
 	{
-		if(s1[i] != s2[i])
-			return (s1[i] > s2[i]);
 		i++;
 	}
-	return(s1[i] > s2[i]);
+	return((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
 void sort(char **m)
 {
-	int i = 0;
-	int j;
-	while(m[i])
+	int n = 0;
+	while(m[n])
+		n++;
+	int gap = n;
+	int trocas = 1;
+	while(gap > 1 || trocas == 1)
 	{
-		j = 0;
-		while(m[j] && m[j + 1])
+		gap = (gap * 10) / 13;
+		if(gap < 1)
+			gap = 1;
+		int i = 0;
+		trocas = 0;
+		while(m[gap + i])
 		{
-			if(compare(m[j], m[j + 1]))
-				swap_s(&m[j], &m[j + 1]);
-			j++;
+			if(ft_strcmp(m[i], m[i + gap]) > 0)
+			{
+				swap_s(&m[i], &m[i + gap]);
+				trocas = 1;
+			}
+			i++;
 		}
-		i++;
 	}
 }
 
