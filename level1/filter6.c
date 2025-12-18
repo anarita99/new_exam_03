@@ -1,23 +1,22 @@
 #define _GNU_SOURCE
 #include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int main(int ac, char **av)
 {
-	if(ac != 2 || av[1] == NULL)
-		return 1;
 	char str[1000000];
 	size_t i = 0;
-	int read_res = 1;
-	while(read_res > 0)
+	int read_ret = 1;
+	if(ac != 2)
+		return 1;
+	while(read_ret > 0)
 	{
-		read_res = read(0, &str[i], 1);
-		if(read_res == - 1)
+		read_ret = read(0, &str[i], 1);
+		if(read_ret == -1)
 		{
 			perror("Error: ");
-			return 0;
+			return 1;
 		}
 		i++;
 	}
@@ -35,7 +34,6 @@ int main(int ac, char **av)
 				i++;
 			}
 		}
-		i++;
 	}
 	printf("%s", str);
 	return 0;
