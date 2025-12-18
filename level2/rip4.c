@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void solve(char *s, char *res, int i, int lrem, int rrem, int bal)
+void solve(char *res, char *s, int i, int lrem, int rrem, int bal)
 {
 	if(s[i] == '\0')
 	{
@@ -13,34 +13,34 @@ void solve(char *s, char *res, int i, int lrem, int rrem, int bal)
 	}
 	res[i] = s[i];
 	if(s[i] == '(')
-		solve(s, res, i + 1, lrem, rrem, bal + 1);
+		solve(res, s, i + 1, lrem, rrem, bal + 1);
 	else if(s[i] == ')')
 	{
 		if(bal > 0)
-			solve(s, res, i + 1, lrem, rrem, bal - 1);
+			solve(res, s, i + 1, lrem, rrem, bal - 1);
 	}
 	else
-		solve(s, res, i + 1, lrem, rrem, bal);
+		solve(res, s, i + 1, lrem, rrem, bal);
 	if(s[i] == '(' && lrem > 0)
 	{
 		res[i] = ' ';
-		solve(s, res, i + 1, lrem - 1, rrem, bal);
+		solve(res, s, i + 1, lrem - 1, rrem, bal);
 	}
 	else if(s[i] == ')' && rrem > 0)
 	{
 		res[i] = ' ';
-		solve(s, res, i + 1, lrem, rrem - 1, bal);
+		solve(res, s, i + 1, lrem, rrem - 1, bal);
 	}
 }
 
 int main(int ac, char **av)
 {
+	if(ac != 2)
+		return 1;
 	int i = 0;
 	int bal = 0;
 	int lrem = 0;
 	int rrem = 0;
-	if(ac != 2)
-		return 1;
 	while(av[1][i])
 	{
 		if(av[1][i] == '(')
@@ -58,8 +58,7 @@ int main(int ac, char **av)
 		lrem = bal;
 	char *res = malloc((strlen(av[1]) + 1) * sizeof(char));
 	res[strlen(av[1])] = '\0';
-	solve(av[1], res, 0, lrem, rrem, 0);
-	free(res);
+	solve(res, av[1], 0, lrem, rrem, 0);
 	return 0;
 }
 

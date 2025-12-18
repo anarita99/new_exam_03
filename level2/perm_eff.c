@@ -60,7 +60,6 @@ void sort(char **m)
     while (gap > 1 || trocas == 1)
     {
         // MUDANÇA 2: Diminuir o pente.
-        // Decorar só isto: gap = (gap * 10) / 13
         gap = (gap * 10) / 13;
         if (gap < 1) 
 			gap = 1; // O pente mínimo é 1 (vizinho com vizinho)

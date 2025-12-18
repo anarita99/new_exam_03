@@ -13,7 +13,7 @@ char *ft_strchr(char *s, int c)
 
 void *ft_memcpy(void *dest, const void *src, size_t n)
 {
-    size_t	i = 0;
+	size_t i = 0;
 	while (i < n)
 	{
 		((char*)dest)[i] = ((char*)src)[i];
@@ -60,12 +60,11 @@ void *ft_memmove(void *dest, const void *src, size_t n)
 {
 	unsigned char *d = dest;
 	const unsigned char *s = src;
-	size_t i = 0;
 	if(d == s)
 		return dest;
 	if(d < s)
 	{
-		i = 0;
+		size_t i = 0;
 		while(i < n)
 		{
 			d[i] = s[i];
@@ -74,20 +73,20 @@ void *ft_memmove(void *dest, const void *src, size_t n)
 	}
 	else
 	{
-		i = n;
+		size_t i = n;
 		while(i > 0)
 		{
 			d[i - 1] = s[i - 1];
 			i--;
 		}
 	}
-    return dest;
+	return dest;
 }
 
 char *get_next_line(int fd)
 {
-    static char chunk[BUFFER_SIZE + 1] = "";
-    char *ret = NULL;
+	static char chunk[BUFFER_SIZE + 1] = "";
+	char *ret = NULL;
 	int read_ret;
 
 	if(chunk[0] == '\0')
@@ -103,9 +102,9 @@ char *get_next_line(int fd)
 		if (!str_append_str(&ret, chunk))
 			return NULL;
 		read_ret = read(fd, chunk, BUFFER_SIZE);
-        if (read_ret <= 0)
+		if (read_ret <= 0)
 		{
-			if(*ret && ret)
+			if(ret && *ret)
 			{
 				chunk[0] = '\0';
 				return ret;

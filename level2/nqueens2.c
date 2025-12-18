@@ -8,30 +8,31 @@ void print_results(char **grid)
 	int j = 0;
 	while(grid[i])
 	{
+		j = 0;
 		while(grid[i][j])
 		{
 			if(grid[i][j] == '1')
 				printf("%d", j);
 			j++;
 		}
-		if(grid[i + 1] == NULL)
-			printf("	");
+		if(grid[i][j] == '\0')
+			printf(" ");
 		i++;
 	}
 	printf("\n");
 }
 
-int	check_d(char **grid, int x, int y, int add_x)
+int check_d(char **grid, int x, int y, int add_x)
 {
-	int new_x = x + add_x;
 	int new_y = y - 1;
-	if(new_y < 0 || new_x < 0)
+	int new_x = x + add_x;
+	if(new_x < 0 || new_y < 0)
 		return 1;
 	if(grid[new_y][new_x] == '\0')
 		return 1;
 	if(grid[new_y][new_x] == '1')
 		return 0;
-	return(check_d(grid, new_x, new_y, add_x));
+	return (check_d(grid, new_x, new_y, add_x));
 }
 
 int is_valid(char **grid, int y, int x)
@@ -79,13 +80,15 @@ void free_grid(char **grid)
 
 int main(int ac, char **av)
 {
+	if(ac != 2)
+		return 1;
 	int grid_size = atoi(av[1]);
-	char **grid = calloc((grid_size + 1), sizeof(char *));
+	char **grid = calloc(grid_size + 1, sizeof(char *));
 	int i = 0;
 	int j = 0;
 	while(i < grid_size)
 	{
-		grid[i] = calloc((grid_size + 1), sizeof(char));
+		grid[i] = calloc(grid_size + 1, sizeof(char));
 		if(!grid)
 			return(free_grid(grid), 1);
 		j = 0;
@@ -98,6 +101,6 @@ int main(int ac, char **av)
 	}
 	grid[grid_size] = NULL;
 	n_queens(grid, 0);
-	free_grid(grid);
-	return 0;
+	free(grid);
+	return (0);
 }

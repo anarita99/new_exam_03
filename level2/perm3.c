@@ -32,10 +32,12 @@ char *ft_strdup(char *s)
 
 int ft_strcmp(char *s1, char *s2)
 {
+	if(!s1 || !s2)
+		return 0;
 	int i = 0;
 	while(s1[i] && s2[i] && (s1[i] == s2[i]))
 		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
 void sort(char **m)
@@ -55,7 +57,7 @@ void sort(char **m)
 		i = 0;
 		while(m[i + gap])
 		{
-			if (ft_strcmp(m[i], m[i + gap]) > 0)
+			if(ft_strcmp(m[i], m[i + gap]) > 0)
 			{
 				swap_s(&m[i], &m[i + gap]);
 				trocas = 1;
@@ -103,15 +105,15 @@ int main(int ac, char **av)
 {
 	if(ac != 2)
 		return 1;
-	int i = 0;
 	int l = 0;
 	char *s = av[1];
 	int r = strlen(s) - 1;
 	char **m = malloc((fac(s) + 1) * sizeof(char *));
-	if(!m)
+	if (!m)
 		return 1;
 	perm(m, s, l, r);
 	sort(m);
+	int i = 0;
 	while(m[i])
 	{
 		puts(m[i]);
@@ -119,4 +121,5 @@ int main(int ac, char **av)
 		i++;
 	}
 	free(m);
+	return(0);
 }

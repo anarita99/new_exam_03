@@ -16,7 +16,7 @@ void print_set(int *set, int size)
 	printf("\n");
 }
 
-void	find_set(int *nums, int *set, int sum, int size, int index, int set_index, int target)
+void find_set(int *nums, int *set, int size, int sum, int index, int set_index, int target)
 {
 	int i = index;
 	int next_sum = 0;
@@ -26,9 +26,9 @@ void	find_set(int *nums, int *set, int sum, int size, int index, int set_index, 
 		set[set_index] = nums[i];
 		if(next_sum == target)
 			print_set(set, set_index + 1);
-		find_set(nums, set, next_sum, size, i + 1, set_index + 1, target);
+		find_set(nums, set, size, next_sum, i + 1, set_index + 1, target);
 		i++;
-	}	
+	}
 }
 
 int main(int ac, char **av)
@@ -45,8 +45,9 @@ int main(int ac, char **av)
 		nums[i] = atoi(av[i + 2]);
 		i++;
 	}
-	find_set(nums, set, 0, size, 0, 0, target);
-	return (0);
-}
+	find_set(nums, set, size, 0, 0, 0, target);
+	free(nums);
+	return 0;
 
+}
 //./a.out 12 5 2 1 8 4 3 7 11 | cat -e
