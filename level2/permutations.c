@@ -1,38 +1,9 @@
-/*Assignment name  : permutations
-Expected files   : *.c *.h
-Allowed functions: puts, malloc, calloc, realloc, free, write
----------------------------------------------------------------
-
-Write a program that will print all the permutations of a string given as argument.
-
-The solutions must be given in alphabetical order.
-
-We will not try your program with strings containing duplicates (eg: 'abccd').
-
-For example this should work:
-
-$> ./permutations a | cat -e
-a$
-
-$> ./permutations ab | cat -e
-ab$
-ba$
-
-$> ./permutations abc | cat -e
-abc$
-acb$
-bac$
-bca$
-cab$
-cba$*/
-
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
-
-void	swap_s(char **a, char **b)
+void swap_s(char **a, char **b)
 {
 	char *temp = *a;
 	*a = *b;
@@ -48,9 +19,11 @@ void swap(char *a, char *b)
 
 char *ft_strdup(char *s)
 {
-	char *t = malloc((strlen(s) + 1) * sizeof(char));
+	char *t = calloc((strlen(s) + 1),sizeof(char));
+	if(!t)
+		return NULL;
 	int i = 0;
-	while(s[i])
+	while(s[i] != '\0')
 	{
 		t[i] = s[i];
 		i++;
@@ -61,40 +34,51 @@ char *ft_strdup(char *s)
 
 int ft_strcmp(char *s1, char *s2)
 {
-	int i = 0;
 	if(!s1 || !s2)
 		return 0;
+	int i = 0;
 	while(s1[i] && s2[i] && (s1[i] == s2[i]))
+	{
 		i++;
+	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void	sort(char **m)
+void sort(char **m)
 {
-	int n = 0;
-	while(m[n])
-		n++;
-	int gap = n;
-	int trocas = 1;
-	int i;
-	while(gap > 1 || trocas == 1)
-	{
-		gap = (gap * 10) / 13;
-		if(gap < 1)
-			gap = 1;
-		trocas = 0;
-		i = 0;
-		while(m[i + gap])
-		{
-			if(ft_strcmp(m[i], m[i + gap]) > 0)
-			{
-				swap_s(&m[i], &m[i + gap]);
-				trocas = 1;
-			}
-			i++;
-				
-		}
-	} 
+    int n = 0;
+    while(m[n]) 
+		n++; // 1. Descobrir o tamanho total da lista
+
+    int gap = n;     // O "gap" é o tamanho dos dentes do pente
+    int trocas = 1;  // Para saber se mexemos em alguma coisa
+    int i;
+
+    // MUDANÇA 1: O loop principal muda.
+    // Em vez de i++, fazemos enquanto o pente não for fino (gap > 1) 
+    // OU enquanto houver trocas para fazer.
+    while (gap > 1 || trocas == 1)
+    {
+        // MUDANÇA 2: Diminuir o pente.
+        gap = (gap * 10) / 13;
+        if (gap < 1) 
+			gap = 1; // O pente mínimo é 1 (vizinho com vizinho)
+        trocas = 0; // Reset
+        i = 0;
+        
+        // MUDANÇA 3: O loop interno compara com o GAP, não com +1
+        while (m[i + gap]) 
+        {
+            // O teu compare original funciona, mas o strcmp é melhor.
+            // Se usares o teu compare, garante que retorna a diferença.
+            if (ft_strcmp(m[i], m[i + gap]) > 0) 
+            {
+                swap_s(&m[i], &m[i + gap]);
+                trocas = 1; // Marcamos que fizemos uma troca
+            }
+            i++;
+        }
+    }
 }
 
 int fac(char *s)
@@ -134,9 +118,9 @@ void perm(char **m, char *s, int l, int r)
 int main(int ac, char **av)
 {
 	if(ac != 2)
-		return 1;
+		return 0;
 	char *s = av[1];
-	char **m = malloc((fac(s) + 1) * sizeof(char *));
+	char **m = calloc((fac(s) + 1), sizeof(char*));
 	if(!m)
 		return 1;
 	perm(m, s, 0, strlen(s) - 1);
@@ -150,4 +134,7 @@ int main(int ac, char **av)
 	}
 	free(m);
 	return 0;
+
 }
+
+// cc -Wall -Wextra -Werror perm6.c
